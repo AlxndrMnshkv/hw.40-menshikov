@@ -1,25 +1,39 @@
-import logo from './logo.svg';
 import './App.css';
+import React, {Component} from 'react';
+import Start from "./components/Start";
+import {page} from "./utils/constants"
+import Game from "./components/Game";
+import Result from "./components/Result";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            activePage: page[0],
+            computer: 0,
+            you: 0
+        }
+    }
+
+    changePage = (page) => this.setState({...this.state, activePage: page});
+    changeScore = (computerValue, youValue) => this.setState({...this.state, computer: computerValue, you: youValue});
+
+    render() {
+        return (
+            <div className="App">
+                {this.state.activePage === 'start' && (
+                    <Start changePage={this.changePage}/>
+                )}
+                {this.state.activePage === 'game' && (
+                    <Game changePage={this.changePage} changeScore={this.changeScore} />
+                )}
+                {this.state.activePage === 'result' && (
+                    <Result changePage={this.changePage} computerValue={this.state.computer} youValue={this.state.you}/>
+                )}
+            </div>
+        );
+    }
 }
 
 export default App;
+
